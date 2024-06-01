@@ -34,20 +34,24 @@ void setup()
     Serial.begin(9600);
     setSpeed(eL, 255);
     setSpeed(eR, 255);
-    forward();
-    delay(5000);
-    stopF();
+    // forward();
+    // delay(5000);
+    // stopF();
+
+    turn('r');
+    delay(2000);
+    allOff();
+    turn('l');
+    delay(2000);
+    allOff();
 }
 
 void loop()
 {
-    // digitalWrite(in4, HIGH);
 
-    // digitalWrite(in2, HIGH);
-
-    if (millis() - cu >= 500)
-    {
-    }
+    // if (millis() - cu >= 500)
+    // {
+    // }
 }
 
 bool irR(int irPin)
@@ -89,5 +93,25 @@ void stopR()
     digitalWrite(in4, HIGH);
     delay(100);
     digitalWrite(in2, LOW);
+    digitalWrite(in4, LOW);
+}
+void turn(char dir)
+{
+    if (dir == 'r')
+    {
+        digitalWrite(in1, HIGH);
+        digitalWrite(in4, HIGH);
+    }
+    else if (dir == 'l')
+    {
+        digitalWrite(in2, HIGH);
+        digitalWrite(in3, HIGH);
+    }
+}
+void allOff()
+{
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
     digitalWrite(in4, LOW);
 }

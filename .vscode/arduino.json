@@ -1,6 +1,6 @@
 {
     "port": "COM9",
     "board": "arduino:avr:uno",
-    "sketch": "sumo.ino",
+    "sketch": "summo.ino",
     "output": "../ArduinoOutput"
 }
