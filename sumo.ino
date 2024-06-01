@@ -36,7 +36,7 @@ void setup()
     setSpeed(eR, 255);
     forward();
     delay(5000);
-    stop();
+    stopF();
 }
 
 void loop()
@@ -71,7 +71,17 @@ void rev()
     digitalWrite(in2, HIGH);
     digitalWrite(in4, HIGH);
 }
-void stop()
+void stopF()
+{
+    digitalWrite(in1, LOW);
+    digitalWrite(in3, LOW);
+    digitalWrite(in2, HIGH);
+    digitalWrite(in4, HIGH);
+    delay(100);
+    digitalWrite(in2, LOW);
+    digitalWrite(in4, LOW);
+}
+void stopR()
 {
     digitalWrite(in1, LOW);
     digitalWrite(in3, LOW);
