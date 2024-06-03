@@ -13,8 +13,8 @@
 #define in4 9
 #define in3 8
 
-unsigned long long int cu = 0;
-int p1000 = 1000;
+// unsigned long long int cu = 0;
+// int p1000 = 1000;
 // unsigned long long int time_now1 = 0;
 // unsigned long long int time_now2 = 0;
 
