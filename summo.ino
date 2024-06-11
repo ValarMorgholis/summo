@@ -1,5 +1,5 @@
 // Declaration of IR pins
-https : // github.com/gitkraken/vscode-gitlens#define fIrRP A0
+#define fIrRP A0
 #define fIrLP A1
 #define bIrRP A2
 #define bIrLP A3
@@ -13,10 +13,9 @@ https : // github.com/gitkraken/vscode-gitlens#define fIrRP A0
 #define in4 9
 #define in3 8
 
-        unsigned long long int cu = 0;
-// int p1000 = 1000;
-// unsigned long long int time_now1 = 0;
-// unsigned long long int time_now2 = 0;
+int T1 = 0, T2 = 0;
+unsigned long int c1 = 0, c2 = 0;
+uint8_t TimeInterval = 100;
 
 void setup()
 {
@@ -34,7 +33,6 @@ void setup()
     pinMode(in3, OUTPUT);
     pinMode(2, INPUT);
 
-    cu = millis();
     Serial.begin(115200);
     setSpeed(eL, 100);
     setSpeed(eR, 100);
@@ -42,13 +40,11 @@ void setup()
 
 void loop()
 {
-    // Serial.println(digitalRead(A1));
-    Serial.println(irCh('f', 'l'));
+    // Serial.println(irCh('f', 'l'));
+    T2 = millis();
+    c2 = millis();
     delay(500);
-    // turn('r', 10);
-    // if (millis() - cu >= 500)
-    // {
-    // }
+    turn('r', 10);
 }
 
 bool irCh(char forb, char side)
@@ -98,14 +94,25 @@ void stopR()
 }
 void turn(char dir, int deg)
 {
+
     if (dir == 'r')
     {
-        digitalWrite(in2, HIGH);
-        digitalWrite(in3, HIGH);
-        delay(deg * 100);
-        digitalWrite(in2, LOW);
-        digitalWrite(in3, LOW);
-        delay(deg * 100);
+        T2 = millis();
+        if ((T2 - T1) >= TimeInterval)
+        {
+            digitalWrite(in2, HIGH);
+            digitalWrite(in3, HIGH);
+            T1 = millis();
+        }
+        // delay(deg * 100);
+        if ((c2 - c1) >= TimeInterval) // test whether the period has elapsed
+        {
+            digitalWrite(in2, LOW);
+            digitalWrite(in3, LOW);
+            c1 = millis();
+        }
+
+        // delay(deg * 100);
     }
     else if (dir == 'l')
     {
@@ -124,26 +131,3 @@ void off()
     digitalWrite(in3, LOW);
     digitalWrite(in4, LOW);
 }
-
-// if ((millis() - time_now1) >= 1000)
-// {
-//     time_now1 = millis();
-//     unsigned int a = time_now1;
-//     Serial.println("Hello");
-//     Serial.println(millis());
-//     Serial.println(a);
-//     digitalWrite(in2, HIGH);
-//     digitalWrite(in3, HIGH);
-// }
-
-// if ((millis() - time_now2) >= 1000)
-// {
-//     time_now2 = millis();
-//     unsigned int a = time_now2;
-//     Serial.println("Hello");
-//     Serial.println(millis());
-//     Serial.println(a);
-
-//     digitalWrite(in2, LOW);
-//     digitalWrite(in3, LOW);
-// }
