@@ -1,8 +1,9 @@
+#include <Arduino.h>
 // Declaration of IR pins
-#define fIrRP A0
-#define fIrLP A1
-#define bIrRP A2
-#define bIrLP A3
+#define FRir A0
+#define FLir A1
+#define BRir A2
+#define BLir A3
 
 // Declaration of R motor controller pins
 #define eR 11
@@ -13,6 +14,9 @@
 #define in4 9
 #define in3 8
 
+const int trig_echoF = 5;
+const int trig_echoB = 6;
+
 unsigned long int T1 = 0, T2 = 0;
 unsigned long int E1 = 0, E2 = 0;
 unsigned long int D1 = 0, D2 = 0;
@@ -22,10 +26,11 @@ uint8_t TimeInterval = 100;
 
 void setup()
 {
-    pinMode(fIrRP, INPUT);
-    pinMode(fIrLP, INPUT);
-    pinMode(bIrRP, INPUT);
-    pinMode(bIrLP, INPUT);
+
+    pinMode(FRir, INPUT);
+    pinMode(FLir, INPUT);
+    pinMode(BRir, INPUT);
+    pinMode(BLir, INPUT);
 
     pinMode(eR, OUTPUT);
     pinMode(in2, OUTPUT);
@@ -46,21 +51,55 @@ void loop()
     // Serial.println(irCh('f', 'l'));
     T2 = millis();
     c2 = millis();
-    delay(500);
-    turnL(10);
-    turnR(10);
-}
+    Serial.print(sonicF());
+    Serial.print("cmF");
+    Serial.println();
 
-bool irCh(char forb, char side)
+    delay(1000);
+    Serial.print(sonicB());
+    Serial.print("cmB");
+    Serial.println();
+
+    // turnL(20);
+    // turnR(20);
+}
+int sonicF()
 {
-    if (forb == 'f' && side == 'r')
-        return !(digitalRead(fIrRP));
-    else if (forb == 'f' && side == 'l')
-        return !(digitalRead(fIrLP));
-    else if (forb == 'b' && side == 'r')
-        return !(digitalRead(bIrRP));
-    else if (forb == 'b' && side == 'l')
-        return !(digitalRead(fIrRP));
+    long cm, duration;
+    pinMode(trig_echoF, OUTPUT);
+
+    digitalWrite(trig_echoF, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trig_echoF, HIGH);
+    delayMicroseconds(5);
+    digitalWrite(trig_echoF, LOW);
+
+    pinMode(trig_echoF, INPUT);
+    duration = pulseIn(trig_echoF, HIGH);
+
+    if ((duration / 29 / 2) > 250)
+        return -1;
+    else
+        return duration / 29 / 2;
+}
+int sonicB()
+{
+    long cm, duration;
+    pinMode(trig_echoB, OUTPUT);
+
+    digitalWrite(trig_echoB, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trig_echoB, HIGH);
+    delayMicroseconds(5);
+    digitalWrite(trig_echoB, LOW);
+
+    pinMode(trig_echoB, INPUT);
+    duration = pulseIn(trig_echoB, HIGH);
+
+    if ((duration / 29 / 2) > 250)
+        return -1;
+    else
+        return duration / 29 / 2;
 }
 void setSpeed(char Motor, int speed)
 {
@@ -139,3 +178,9 @@ void off()
     digitalWrite(in3, LOW);
     digitalWrite(in4, LOW);
 }
+
+// void fight()
+// {
+//     if digitalRead ()
+//         ;
+// }
