@@ -13,8 +13,11 @@
 #define in4 9
 #define in3 8
 
-int T1 = 0, T2 = 0;
+unsigned long int T1 = 0, T2 = 0;
+unsigned long int E1 = 0, E2 = 0;
+unsigned long int D1 = 0, D2 = 0;
 unsigned long int c1 = 0, c2 = 0;
+
 uint8_t TimeInterval = 100;
 
 void setup()
@@ -44,7 +47,8 @@ void loop()
     T2 = millis();
     c2 = millis();
     delay(500);
-    turn('r', 10);
+    turnL(10);
+    turnR(10);
 }
 
 bool irCh(char forb, char side)
@@ -92,36 +96,40 @@ void stopR()
     digitalWrite(in1, LOW);
     digitalWrite(in3, LOW);
 }
-void turn(char dir, int deg)
+void turnR(int deg)
 {
 
-    if (dir == 'r')
+    T2 = millis();
+    if ((T2 - T1) >= deg * TimeInterval)
     {
-        T2 = millis();
-        if ((T2 - T1) >= TimeInterval)
-        {
-            digitalWrite(in2, HIGH);
-            digitalWrite(in3, HIGH);
-            T1 = millis();
-        }
-        // delay(deg * 100);
-        if ((c2 - c1) >= TimeInterval) // test whether the period has elapsed
-        {
-            digitalWrite(in2, LOW);
-            digitalWrite(in3, LOW);
-            c1 = millis();
-        }
-
-        // delay(deg * 100);
+        digitalWrite(in2, HIGH);
+        digitalWrite(in3, HIGH);
+        T1 = millis();
     }
-    else if (dir == 'l')
+    c2 = millis();
+    if ((c2 - c1) >= deg * TimeInterval)
+    {
+        digitalWrite(in2, LOW);
+        digitalWrite(in3, LOW);
+        c1 = millis();
+    }
+}
+
+void turnL(int deg)
+{
+    E2 = millis();
+    if ((E2 - E1) >= deg * TimeInterval)
     {
         digitalWrite(in1, HIGH);
         digitalWrite(in4, HIGH);
-        delay(deg * 100);
-        digitalWrite(in2, LOW);
-        digitalWrite(in3, LOW);
-        delay(deg * 100);
+        E1 = millis();
+    }
+    D2 = millis();
+    if ((D2 - D1) >= deg * TimeInterval)
+    {
+        digitalWrite(in1, LOW);
+        digitalWrite(in4, LOW);
+        D1 = millis();
     }
 }
 void off()
