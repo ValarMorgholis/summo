@@ -14,8 +14,16 @@
 #define in4 9
 #define in3 8
 
+// Declaration of ultrasonic pins
 const int trig_echoF = 5;
 const int trig_echoB = 6;
+
+// Declaration of lever and blade keys pins
+#define u 2
+#define d 3
+
+#define uP A4
+#define dP A5
 
 unsigned long int T1 = 0, T2 = 0;
 unsigned long int E1 = 0, E2 = 0;
@@ -39,29 +47,33 @@ void setup()
     pinMode(eL, OUTPUT);
     pinMode(in4, OUTPUT);
     pinMode(in3, OUTPUT);
-    pinMode(2, INPUT);
+
+    pinMode(u, OUTPUT);
+    pinMode(d, OUTPUT);
+
+    pinMode(uP, INPUT);
+    pinMode(dP, INPUT);
 
     Serial.begin(115200);
-    setSpeed(eL, 100);
-    setSpeed(eR, 100);
+    setSpeed(eL, 255);
+    setSpeed(eR, 255);
 }
 
 void loop()
 {
     // Serial.println(irCh('f', 'l'));
-    T2 = millis();
-    c2 = millis();
-    Serial.print(sonicF());
-    Serial.print("cmF");
-    Serial.println();
+    // Serial.print(sonicF());
+    // Serial.print("cmF");
+    // Serial.println();
 
-    delay(1000);
-    Serial.print(sonicB());
-    Serial.print("cmB");
-    Serial.println();
+    // delay(1000);
+    // Serial.print(sonicB());
+    // Serial.print("cmB");
+    // Serial.println();
 
-    // turnL(20);
+    // turnR(10);
     // turnR(20);
+    up();
 }
 int sonicF()
 {
@@ -139,32 +151,47 @@ void turnR(int deg)
 {
 
     T2 = millis();
-    if ((T2 - T1) >= deg * TimeInterval)
+    if ((T2 - T1) >= (deg * TimeInterval))
     {
         digitalWrite(in2, HIGH);
         digitalWrite(in3, HIGH);
         T1 = millis();
+        Serial.print("HIGH:");
+        Serial.println(millis());
+        Serial.print("T1: ");
+
+        Serial.println(T1);
+        Serial.print("T2: ");
+
+        Serial.println(T2);
     }
     c2 = millis();
-    if ((c2 - c1) >= deg * TimeInterval)
+    if ((c2 - c1) >= (deg * TimeInterval))
     {
         digitalWrite(in2, LOW);
         digitalWrite(in3, LOW);
         c1 = millis();
+        Serial.print("LOW:");
+        Serial.println(millis());
+        Serial.print("c1: ");
+        Serial.println(c1);
+
+        Serial.print("c2: ");
+        Serial.println(c2);
     }
 }
 
 void turnL(int deg)
 {
     E2 = millis();
-    if ((E2 - E1) >= deg * TimeInterval)
+    if ((E2 - E1) >= (deg * TimeInterval))
     {
         digitalWrite(in1, HIGH);
         digitalWrite(in4, HIGH);
         E1 = millis();
     }
     D2 = millis();
-    if ((D2 - D1) >= deg * TimeInterval)
+    if ((D2 - D1) >= (deg * TimeInterval))
     {
         digitalWrite(in1, LOW);
         digitalWrite(in4, LOW);
@@ -179,6 +206,26 @@ void off()
     digitalWrite(in4, LOW);
 }
 
+void up()
+{
+    if (analogRead(uP) == 0)
+    {
+        digitalWrite(d, LOW);
+        digitalWrite(u, HIGH);
+    }
+    else
+        digitalWrite(u, LOW);
+}
+void down()
+{
+    if (analogRead(dP) == 0)
+    {
+        digitalWrite(u, LOW);
+        digitalWrite(d, HIGH);
+    }
+    else
+        digitalWrite(d, LOW);
+}
 // void fight()
 // {
 //     if digitalRead ()
