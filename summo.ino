@@ -22,8 +22,8 @@ const int trig_echoB = 6;
 #define u 2
 #define d 3
 
-#define uP A4
-#define dP A5
+#define uK A4
+#define dK A5
 
 unsigned long int T1 = 0, T2 = 0;
 unsigned long int E1 = 0, E2 = 0;
@@ -51,8 +51,8 @@ void setup()
     pinMode(u, OUTPUT);
     pinMode(d, OUTPUT);
 
-    pinMode(uP, INPUT);
-    pinMode(dP, INPUT);
+    pinMode(uK, INPUT);
+    pinMode(dK, INPUT);
 
     Serial.begin(115200);
     setSpeed(eL, 255);
@@ -73,7 +73,6 @@ void loop()
 
     // turnR(10);
     // turnR(20);
-    up();
 }
 int sonicF()
 {
@@ -208,7 +207,7 @@ void off()
 
 void up()
 {
-    if (analogRead(uP) == 0)
+    if (analogRead(uK) == 0)
     {
         digitalWrite(d, LOW);
         digitalWrite(u, HIGH);
@@ -218,7 +217,7 @@ void up()
 }
 void down()
 {
-    if (analogRead(dP) == 0)
+    if (analogRead(dK) == 0)
     {
         digitalWrite(u, LOW);
         digitalWrite(d, HIGH);
