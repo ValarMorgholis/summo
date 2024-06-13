@@ -1,5 +1,5 @@
 // Declaration of IR pins
-https : // github.com/gitkraken/vscode-gitlens#define fIrRP A0
+#define fIrRP A0
 #define fIrLP A1
 #define bIrRP A2
 #define bIrLP A3
@@ -13,7 +13,7 @@ https : // github.com/gitkraken/vscode-gitlens#define fIrRP A0
 #define in4 9
 #define in3 8
 
-        unsigned long long int cu = 0;
+unsigned long long int cu = 0;
 // int p1000 = 1000;
 // unsigned long long int time_now1 = 0;
 // unsigned long long int time_now2 = 0;
