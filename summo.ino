@@ -1,16 +1,9 @@
 #include <Arduino.h>
 // Declaration of IR pins
-<<<<<<< HEAD
 #define FRir A0
 #define FLir A1
 #define BRir A2
 #define BLir A3
-=======
-#define fIrRP A0
-#define fIrLP A1
-#define bIrRP A2
-#define bIrLP A3
->>>>>>> 35a46b3d06658f9c4a1de927f7088270393a15fa
 
 // Declaration of R motor controller pins
 #define eR 11
@@ -21,7 +14,6 @@
 #define in4 9
 #define in3 8
 
-<<<<<<< HEAD
 // Declaration of ultrasonic pins
 const int trig_echoF = 5;
 const int trig_echoB = 6;
@@ -39,12 +31,6 @@ unsigned long int D1 = 0, D2 = 0;
 unsigned long int c1 = 0, c2 = 0;
 
 uint8_t TimeInterval = 100;
-=======
-unsigned long long int cu = 0;
-// int p1000 = 1000;
-// unsigned long long int time_now1 = 0;
-// unsigned long long int time_now2 = 0;
->>>>>>> 35a46b3d06658f9c4a1de927f7088270393a15fa
 
 void setup()
 {
@@ -239,8 +225,6 @@ void down()
     else
         digitalWrite(d, LOW);
 }
-// void fight()
-// {
-//     if digitalRead ()
-//         ;
-// }
+void dontGetOut()
+{
+}
