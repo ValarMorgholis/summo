@@ -193,12 +193,12 @@ void down()
     else
         digitalWrite(d, LOW);
 }
-void checkForMovment()
+void checkForMovement()
 {
     if (digitalRead(FRir == 0) && digitalRead(FLir == 0) && digitalRead(BRir == 0) && digitalRead(BLir == 0))
     {
         if (sonicFR() == -1 || sonicFL() == -2) // if nothing detected just walk
-            nsMovment();
+            nsMovement();
         else if (sonicFR() < sonicFL())
         {
             while (sonicFL() - sonicFR() > 20)
@@ -208,7 +208,7 @@ void checkForMovment()
         }
     }
 }
-void nsMovment()
+void nsMovement()
 {
     forward(255);
     if (digitalRead(FRir == 1))
