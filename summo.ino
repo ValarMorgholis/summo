@@ -55,8 +55,6 @@ void setup()
     pinMode(dK, INPUT);
 
     Serial.begin(115200);
-    setSpeed(eL, 255);
-    setSpeed(eR, 255);
 }
 
 void loop()
@@ -74,7 +72,7 @@ void loop()
     // turnR(10);
     // turnR(20);
 }
-int sonicF()
+int sonicFR()
 {
     long cm, duration;
     pinMode(trig_echoF, OUTPUT);
@@ -89,11 +87,13 @@ int sonicF()
     duration = pulseIn(trig_echoF, HIGH);
 
     if ((duration / 29 / 2) > 250)
-        return -1;
+        return -1; // Out of range
+    else if ((duration / 29 / 2) > 100)
+        return -2; // Not detect anything
     else
-        return duration / 29 / 2;
+        return duration / 29 / 2; // Move Mf
 }
-int sonicB()
+int sonicFL()
 {
     long cm, duration;
     pinMode(trig_echoB, OUTPUT);
@@ -112,17 +112,19 @@ int sonicB()
     else
         return duration / 29 / 2;
 }
-void setSpeed(char Motor, int speed)
+void forward(int speed)
 {
-    analogWrite(Motor, speed); // eL and eR
-}
-void forward()
-{
+    analogWrite(eR, speed);
+    analogWrite(eL, speed);
+
     digitalWrite(in1, HIGH);
     digitalWrite(in3, HIGH);
 }
-void rev()
+void rev(int speed)
 {
+    analogWrite(eR, speed);
+    analogWrite(eL, speed);
+
     digitalWrite(in2, HIGH);
     digitalWrite(in4, HIGH);
 }
@@ -146,56 +148,22 @@ void stopR()
     digitalWrite(in1, LOW);
     digitalWrite(in3, LOW);
 }
-void turnR(int deg)
+void turnR()
 {
+    digitalWrite(in2, HIGH);
+    digitalWrite(in3, HIGH);
 
-    T2 = millis();
-    if ((T2 - T1) >= (deg * TimeInterval))
-    {
-        digitalWrite(in2, HIGH);
-        digitalWrite(in3, HIGH);
-        T1 = millis();
-        Serial.print("HIGH:");
-        Serial.println(millis());
-        Serial.print("T1: ");
-
-        Serial.println(T1);
-        Serial.print("T2: ");
-
-        Serial.println(T2);
-    }
-    c2 = millis();
-    if ((c2 - c1) >= (deg * TimeInterval))
-    {
-        digitalWrite(in2, LOW);
-        digitalWrite(in3, LOW);
-        c1 = millis();
-        Serial.print("LOW:");
-        Serial.println(millis());
-        Serial.print("c1: ");
-        Serial.println(c1);
-
-        Serial.print("c2: ");
-        Serial.println(c2);
-    }
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
 }
 
-void turnL(int deg)
+void turnL()
 {
-    E2 = millis();
-    if ((E2 - E1) >= (deg * TimeInterval))
-    {
-        digitalWrite(in1, HIGH);
-        digitalWrite(in4, HIGH);
-        E1 = millis();
-    }
-    D2 = millis();
-    if ((D2 - D1) >= (deg * TimeInterval))
-    {
-        digitalWrite(in1, LOW);
-        digitalWrite(in4, LOW);
-        D1 = millis();
-    }
+    digitalWrite(in1, HIGH);
+    digitalWrite(in4, HIGH);
+
+    digitalWrite(in1, LOW);
+    digitalWrite(in4, LOW);
 }
 void off()
 {
@@ -224,6 +192,34 @@ void down()
     }
     else
         digitalWrite(d, LOW);
+}
+void checkForMovment()
+{
+    if (digitalRead(FRir == 0) && digitalRead(FLir == 0) && digitalRead(BRir == 0) && digitalRead(BLir == 0))
+    {
+        if (sonicFR() == -1 || sonicFL() == -2) // if nothing detected just walk
+            nsMovment();
+        else if (sonicFR() < sonicFL())
+        {
+            while (sonicFL() - sonicFR() > 20)
+            {
+                turnL();
+            }
+        }
+    }
+}
+void nsMovment()
+{
+    forward(255);
+    if (digitalRead(FRir == 1))
+    {
+        while ((FRir == 1))
+        {
+            turnR();
+        }
+        rev(255);
+        //
+    }
 }
 void dontGetOut()
 {
