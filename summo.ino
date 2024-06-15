@@ -225,9 +225,8 @@ void down()
     else
         digitalWrite(d, LOW);
 }
-void dontGetOut()
-{
-    if (digitalRead(FRir != 0))
-    {
-    }
-}
+// void fight()
+// {
+//     if digitalRead ()
+//         ;
+// }
